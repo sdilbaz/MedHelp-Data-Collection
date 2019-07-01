@@ -25,8 +25,8 @@ def process_page(forum_dict,url,url_list):
             break
         except Exception as e:
             print(e)
-#            if k==9:
-#                return None
+            if k==9:
+                return 
             time.sleep(3)
 
     page_html = response.read()
@@ -183,7 +183,6 @@ if __name__=='__main__':
             if href.startswith('/forums/'):
                 forum_dict[forum_category]='https://www.medhelp.org'+href
 
-    forum_dict={'Cats':forum_dict['Cats'],'Salud Dental':forum_dict['Salud Dental'],'Salud de los Niños':forum_dict['Salud de los Niños'],'Salud del Bebé':forum_dict['Salud del Bebé']}
     if os.path.isfile(os.path.join(data_folder,"dones.txt")):
         with open(os.path.join(data_folder,"dones.txt"), "r") as f:
             temp=f.read()
