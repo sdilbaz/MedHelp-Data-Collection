@@ -6,59 +6,13 @@ MedHelp website can be used to collect medical questions and conversations in a 
 The script first collects the links to communities by visiting forum list page on medhelp. For each forum, all of the links for posts are stored. After the links have been extracted, each post is visited and the post is stored as an XML tree. A sample XML tree extracted through this process is given below.
 
 <div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
-&lt;<span class="pl-ent">universe</span>&gt;
-  &lt;<span class="pl-ent">system</span>&gt;
-    &lt;<span class="pl-ent">solar</span>&gt;
-      &lt;<span class="pl-ent">planet</span> <span class="pl-e">age</span>=<span class="pl-s"><span class="pl-pds">"</span>4.543<span class="pl-pds">"</span></span> <span class="pl-e">inhabitable</span>=<span class="pl-s"><span class="pl-pds">"</span>true<span class="pl-pds">"</span></span>&gt;Earth&lt;/<span class="pl-ent">planet</span>&gt;
-      &lt;<span class="pl-ent">planet</span> <span class="pl-e">age</span>=<span class="pl-s"><span class="pl-pds">"</span>4.503<span class="pl-pds">"</span></span>&gt;Mars&lt;/<span class="pl-ent">planet</span>&gt;
-    &lt;/<span class="pl-ent">solar</span>&gt;
-    &lt;<span class="pl-ent">delta-orionis</span>&gt;
-      &lt;<span class="pl-ent">constellation</span>&gt;Orion&lt;/<span class="pl-ent">constellation</span>&gt;
-      &lt;δ-ori-aa1&gt;
-        &lt;<span class="pl-ent">mass</span>&gt;24&lt;/<span class="pl-ent">mass</span>&gt;
-        &lt;<span class="pl-ent">radius</span>&gt;16.5&lt;/<span class="pl-ent">radius</span>&gt;
-        &lt;<span class="pl-ent">luminosity</span>&gt;190000&lt;/<span class="pl-ent">luminosity</span>&gt;
-        &lt;<span class="pl-ent">surface-gravity</span>&gt;3.37&lt;/<span class="pl-ent">surface-gravity</span>&gt;
-        &lt;<span class="pl-ent">temperature</span>&gt;29500&lt;/<span class="pl-ent">temperature</span>&gt;
-        &lt;<span class="pl-ent">rotational-velocity</span>&gt;130&lt;/<span class="pl-ent">rotational-velocity</span>&gt;
-      &lt;/δ-ori-aa1&gt;
-    &lt;/<span class="pl-ent">delta-orionis</span>&gt;
-  &lt;/<span class="pl-ent">system</span>&gt;
-&lt;/<span class="pl-ent">universe</span>&gt;</pre></div>
+&lt;<span class="pl-ent">post</span>&gt;
+  &lt;<span class="pl-ent">post_fields</span>&gt;
+  &lt;/<span class="pl-ent">post_fields</span>&gt;
+  &lt;<span class="pl-ent">response</span> <span class="pl-e">resp_id</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span>&gt;
+  &lt;/<span class="pl-ent">response</span>&gt;
 
--<post>
-
-
--<post_fields>
-
-<href>https://www.medhelp.org/posts/Diabetes---Gestational/gestational-diabetes-/show/2277904</href>
-
-<title>gestational diabetes</title>
-
-<username>TinkerBelly65</username>
-
-<user_link>/personal_pages/user/7754230</user_link>
-
-<time>Thu Aug 21 05:56:50 2014</time>
-
-<body>Yup so it has happened, less then 9Wks away from my due date and my life is turned upside down. I just found out I've got gestational diabetes. I'm so overwhelmed with all the do's and dont's. Not to mention having to test my blood 4 times a day. So it's day one, I'm starving BUT its only 6am and I still have to go grocery shopping later so hints I have nothing GD friendly to eat. So what do I do?</body>
-
-</post_fields>
-
-
--<response resp_id="0">
-
-<username>DraevinMark</username>
-
-<user_link>/personal_pages/user/10055259</user_link>
-
-<time>Thu Aug 21 06:21:15 2014</time>
-
-<body>I have it too and where I come from its hard not to eat the good stuffs. I minimize my starch in take rice etc...drink lots of water. And like u take my blood sugar every day. They're usually below 150's.Good luck I have 58 more days.</body>
-
-</response>
-
-</post>
+&lt;/<span class="pl-ent">post</span>&gt;</pre></div>
 
 The root of the XML tree is contains relevant information from the post such as the link to post, title of the post, username of the poster, link to the poster profile if available, time of posting, and the post body.
 
