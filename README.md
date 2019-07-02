@@ -5,6 +5,27 @@ MedHelp website can be used to collect medical questions and conversations in a 
 
 The script first collects the links to communities by visiting forum list page on medhelp. For each forum, all of the links for posts are stored. After the links have been extracted, each post is visited and the post is stored as an XML tree. A sample XML tree extracted through this process is given below.
 
+<div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;<span class="pl-ent">universe</span>&gt;
+  &lt;<span class="pl-ent">system</span>&gt;
+    &lt;<span class="pl-ent">solar</span>&gt;
+      &lt;<span class="pl-ent">planet</span> <span class="pl-e">age</span>=<span class="pl-s"><span class="pl-pds">"</span>4.543<span class="pl-pds">"</span></span> <span class="pl-e">inhabitable</span>=<span class="pl-s"><span class="pl-pds">"</span>true<span class="pl-pds">"</span></span>&gt;Earth&lt;/<span class="pl-ent">planet</span>&gt;
+      &lt;<span class="pl-ent">planet</span> <span class="pl-e">age</span>=<span class="pl-s"><span class="pl-pds">"</span>4.503<span class="pl-pds">"</span></span>&gt;Mars&lt;/<span class="pl-ent">planet</span>&gt;
+    &lt;/<span class="pl-ent">solar</span>&gt;
+    &lt;<span class="pl-ent">delta-orionis</span>&gt;
+      &lt;<span class="pl-ent">constellation</span>&gt;Orion&lt;/<span class="pl-ent">constellation</span>&gt;
+      &lt;δ-ori-aa1&gt;
+        &lt;<span class="pl-ent">mass</span>&gt;24&lt;/<span class="pl-ent">mass</span>&gt;
+        &lt;<span class="pl-ent">radius</span>&gt;16.5&lt;/<span class="pl-ent">radius</span>&gt;
+        &lt;<span class="pl-ent">luminosity</span>&gt;190000&lt;/<span class="pl-ent">luminosity</span>&gt;
+        &lt;<span class="pl-ent">surface-gravity</span>&gt;3.37&lt;/<span class="pl-ent">surface-gravity</span>&gt;
+        &lt;<span class="pl-ent">temperature</span>&gt;29500&lt;/<span class="pl-ent">temperature</span>&gt;
+        &lt;<span class="pl-ent">rotational-velocity</span>&gt;130&lt;/<span class="pl-ent">rotational-velocity</span>&gt;
+      &lt;/δ-ori-aa1&gt;
+    &lt;/<span class="pl-ent">delta-orionis</span>&gt;
+  &lt;/<span class="pl-ent">system</span>&gt;
+&lt;/<span class="pl-ent">universe</span>&gt;</pre></div>
+
 -<post>
 
 
