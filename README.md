@@ -28,3 +28,6 @@ The root of the XML tree is contains relevant information from the post such as 
 
 If there is a response to the post,  the XML trees will include the responses with information such as the username, the link to the user profile if available, time of posting, and the response body.
 
+Example usage:
+	
+	python ad_collector.py C:/ --ncpu 3
