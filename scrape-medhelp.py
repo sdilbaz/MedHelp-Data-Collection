@@ -7,13 +7,19 @@ Python code for scraping medhelp posts
 from urllib.request import urlopen
 from urllib.request import build_opener
 from bs4 import BeautifulSoup
-from multiprocessing import Pool, Manager, TimeoutError
+from multiprocessing import Pool, Manager, TimeoutError, Process
 import multiprocessing as mp
 import time, argparse, os
 from argparse import RawTextHelpFormatter
 import xml.etree.cElementTree as ET
-import numpy as np
 
+# Progress Tracker for Conversation Tree collection
+def tree_progress(data_folder,num_jobs):
+    while 1:
+        print('Tree Extraction Progress: %.3f%%' % (100.0*sum([len(file[2]) for file in os.walk(r"E:\MedHelp-Data\trees")])/num_jobs))
+        time.sleep(60)    
+   
+# 
 def process_page(forum_dict,url,url_list):
     print('Processing Page {}'.format(url.split('=')[-1]))
     opener = build_opener()
@@ -26,7 +32,7 @@ def process_page(forum_dict,url,url_list):
         except Exception as e:
             print(e)
             if k==9:
-                return 
+                return None
             time.sleep(3)
 
     page_html = response.read()
@@ -35,7 +41,6 @@ def process_page(forum_dict,url,url_list):
     mydivs = soup.findAll("h2", {"class": "subj_title"})
 
     for div in mydivs:
-#            post_links[key].append('https://www.medhelp.org'+div.select("a")[0].attrs["href"])
         url_list.append('https://www.medhelp.org'+div.select("a")[0].attrs["href"])
 
 def process_text(some_string):
@@ -80,7 +85,6 @@ def extract_post(url,save_dir):
     post_text=process_text(post_text_div.text)
     
     post_id=url[-url[::-1].find('/'):]
-    print('Post ID: {}'.format(post_id.rjust(8)))
     
     ET.SubElement(post_fields, "href").text = url
     ET.SubElement(post_fields, "title").text = title
@@ -140,27 +144,36 @@ def extract_post(url,save_dir):
 
     
 if __name__=='__main__':
+    # Argument Parsing
     parser = argparse.ArgumentParser(description='Scrapes MedHelp post, responses and comments and saves as ETrees', formatter_class=RawTextHelpFormatter)
     parser.add_argument('saving_dir',help='Save Location for MedHelp data')
     parser.add_argument('--ncpu', nargs='?', help='Number of cores for multiprocessing, 1 by default', default=1, type=int, dest='mpcpu')
 
     args = parser.parse_args()
 
+    # Saving directory is specified by saving_dir
     saving_dir=args.saving_dir
+    
+    # Number of parallel processes is specified by the mpcpu parameter
     mpcpu=max(args.mpcpu,1)
     
+    # Multiprocessing tools
+    # Manager list is used to store the scraped post links in the same list during the scraping process
     manager=Manager()
     url_list = manager.list()
     pool = Pool(processes=mpcpu)
 
+    # If the directory selected for data collection specified by saving_dir does not exist, ArgumentError is raised.
     if not os.path.isdir(saving_dir):
         msg="Saving directory does not exist. You entered: %s" %saving_dir
-        raise argparse.ArgumentTypeError(msg)
+        raise argparse.ArgumentError(msg)
     
+    # The data that is collected is stored in the MedHelp-Data directory, which is created inside the saving_dir
     data_folder=os.path.join(saving_dir,'MedHelp-Data')
     if not os.path.isdir(data_folder):
         os.mkdir(data_folder)
 
+    # List of all forums on medhelp is given the website specified by the base parameter.
     base='https://www.medhelp.org/forums/list'
     
     opener = build_opener()
@@ -173,6 +186,7 @@ if __name__=='__main__':
     soup=BeautifulSoup(html_contents,'lxml')
     mydivs = soup.findAll("div", {"class": "forums_link"})
     
+    # forum_dict dictionary is used to store the links and forum names of all of the forums on medhelp.
     forum_dict={}
     for element in mydivs:
         forum_category=element.text.strip()
@@ -183,6 +197,8 @@ if __name__=='__main__':
             if href.startswith('/forums/'):
                 forum_dict[forum_category]='https://www.medhelp.org'+href
 
+    # dones.txt inside of the data collection folder contains the list of forums that the post link collection has been completed
+    # This txt file is used to skip repeating data collection when the data collection is restarted after interruption
     if os.path.isfile(os.path.join(data_folder,"dones.txt")):
         with open(os.path.join(data_folder,"dones.txt"), "r") as f:
             temp=f.read()
@@ -190,9 +206,11 @@ if __name__=='__main__':
     else:
         dones=[]
 
+    # post-indexes directory inside of the data collection folder is used to store the list of post links
     if not os.path.isdir(os.path.join(data_folder,"post_indexes")):
         os.mkdir(os.path.join(data_folder,"post_indexes"))
 
+    
     for key in forum_dict.keys():
         if not key in dones:
             print('Indexing post urls of {}'.format(key))
@@ -207,14 +225,24 @@ if __name__=='__main__':
             if processes:
                 [proc.get(300) for proc in processes]
             
-            
             with open(os.path.join(data_folder,"post_indexes",key+'.txt'),"w+") as file:
                 file.write('\n'.join(list(url_list)))
             
             url_list = manager.list()
-    
+
+    main_dir=r"E:\MedHelp-Data\post_indexes"
+    total_length=0
+    for file in os.listdir(main_dir):
+        with open(os.path.join(main_dir,file),"r") as file:
+            temp=file.read()
+        total_length+=len(temp.split('\n'))
+
     if not os.path.isdir(os.path.join(data_folder,"trees")):
         os.mkdir(os.path.join(data_folder,"trees"))
+        
+    p=Process(target=tree_progress,args=[data_folder,total_length])
+    p.start()
+
     print('\t\tPost Extraction Started')
     for key in forum_dict.keys():
         print('\tPost Extraction of {} started'.format(key))
@@ -232,4 +260,10 @@ if __name__=='__main__':
                 proc.get(timeout=60)
             except TimeoutError:
                 print('Process timed out.')
+                time.sleep(200)
+                
+        print('\tPost Extraction of {} completed'.format(key))
 
+
+
+    p.join()
