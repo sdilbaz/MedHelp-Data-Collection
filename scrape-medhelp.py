@@ -16,7 +16,7 @@ import xml.etree.cElementTree as ET
 # Progress Tracker for Conversation Tree collection
 def tree_progress(data_folder,num_jobs):
     while 1:
-        print('Tree Extraction Progress: %.3f%%' % (100.0*sum([len(file[2]) for file in os.walk(r"E:\MedHelp-Data\trees")])/num_jobs))
+        print('Tree Extraction Progress: %.3f%%' % (100.0*sum([len(file[2]) for file in os.walk(os.path.join(data_folder,"trees"))])/num_jobs))
         time.sleep(60)    
    
 # 
@@ -230,7 +230,7 @@ if __name__=='__main__':
             
             url_list = manager.list()
 
-    main_dir=r"E:\MedHelp-Data\post_indexes"
+    main_dir=os.path.join(data_folder,"post_indexes")
     total_length=0
     for file in os.listdir(main_dir):
         with open(os.path.join(main_dir,file),"r") as file:
