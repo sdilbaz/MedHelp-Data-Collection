@@ -228,6 +228,9 @@ if __name__=='__main__':
             with open(os.path.join(data_folder,"post_indexes",key+'.txt'),"w+") as file:
                 file.write('\n'.join(list(url_list)))
             
+            with open(os.path.join(data_folder,"dones.txt"),"w+") as file:
+                file.write(key+"\n")
+            
             url_list = manager.list()
 
     main_dir=os.path.join(data_folder,"post_indexes")
