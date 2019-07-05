@@ -222,8 +222,11 @@ if __name__=='__main__':
             max_post_num=num_div.text
             max_post_num=int(max_post_num[max_post_num.find('of')+3:max_post_num.find(')')])
             processes.extend([pool.apply_async(process_page, (forum_dict,url,url_list)) for url in [forum_dict[key]+'?page='+str(k) for k in range(2,int(max_post_num/20)+1)]])
-            if processes:
-                [proc.get(300) for proc in processes]
+            for proc in processes:
+                try:
+                    proc.get(300)
+                except:
+                    pass
             
             with open(os.path.join(data_folder,"post_indexes",key+'.txt'),"w+") as file:
                 file.write('\n'.join(list(url_list)))
