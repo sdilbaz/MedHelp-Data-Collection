@@ -203,6 +203,7 @@ if __name__=='__main__':
         with open(os.path.join(data_folder,"dones.txt"), "r") as f:
             temp=f.read()
         dones=temp.split('\n')    
+        dones=[item for item in dones if item]
     else:
         dones=[]
 
@@ -231,8 +232,9 @@ if __name__=='__main__':
             with open(os.path.join(data_folder,"post_indexes",key+'.txt'),"w+") as file:
                 file.write('\n'.join(list(url_list)))
             
+            dones.append(key)
             with open(os.path.join(data_folder,"dones.txt"),"w+") as file:
-                file.write(key+"\n")
+                file.write('\n'.join(dones))
             
             url_list = manager.list()
 
